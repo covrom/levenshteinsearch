@@ -3,12 +3,14 @@ package levenshteinsearch
 import (
 	"fmt"
 	"sort"
+	"sync"
 )
 
 // LevenshteinAutomaton is simply the definition of the automaton.
 type LevenshteinAutomaton struct {
 	distanceMax       int
 	searchedTermRunes []rune
+	buf               []int
 }
 
 // GetDistanceMax returns the maximum distance defined for this automaton
@@ -53,24 +55,56 @@ func (state AutomatonState) getHash() int {
 	return total
 }
 
+var valPool = sync.Pool{}
+
+func getValSlice(c int) []int {
+	sl := valPool.Get()
+	if sl != nil {
+		vsl := sl.([]int)
+		if cap(vsl) >= c {
+			return vsl[:c]
+		}
+	}
+	return make([]int, c)
+}
+
+func putValSlice(sl []int) {
+	if sl == nil {
+		return
+	}
+	valPool.Put(sl[:0])
+}
+
 // CreateAutomaton creates a new automaton
 func CreateAutomaton(searchedTerm string, distanceMax int) *LevenshteinAutomaton {
-	return &LevenshteinAutomaton{
+	r1 := distanceMax + 1
+	r2 := (distanceMax + 1) * 2
+	ret := &LevenshteinAutomaton{
 		distanceMax:       distanceMax,
 		searchedTermRunes: []rune(searchedTerm),
+		buf:               getValSlice(r2),
 	}
+	indices := ret.buf[:r1]
+	for i := range indices {
+		indices[i] = i
+	}
+	values := ret.buf[r1:r2]
+	for i := range values {
+		values[i] = i
+	}
+	return ret
+}
+
+func (automaton *LevenshteinAutomaton) Close() {
+	putValSlice(automaton.buf)
 }
 
 // Start gives the initial state allowing to step into the automaton
 func (automaton *LevenshteinAutomaton) Start() AutomatonState {
-	indices := make([]int, automaton.distanceMax+1)
-	for i := 0; i < automaton.distanceMax+1; i++ {
-		indices[i] = i
-	}
-	values := make([]int, automaton.distanceMax+1)
-	for i := 0; i < automaton.distanceMax+1; i++ {
-		values[i] = i
-	}
+	r1 := automaton.distanceMax + 1
+	r2 := (automaton.distanceMax + 1) * 2
+	indices := automaton.buf[:r1]
+	values := automaton.buf[r1:r2]
 
 	return AutomatonState{
 		indices: indices,
@@ -161,6 +195,7 @@ type transitionDetail struct {
 // CreateDigraph returns the textual representation of an automaton to be rendered with graphviz
 func CreateDigraph(searchedTerm string, distanceMax int) []string {
 	automaton := CreateAutomaton(searchedTerm, distanceMax)
+	defer automaton.Close()
 
 	digraphInfo := &digraphInformation{
 		counter:     0,

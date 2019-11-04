@@ -3,6 +3,7 @@ package levenshteinsearch
 func (dictionary *Dictionary) SearchAll(searchedTerm string, distanceMax int) map[string]*WordInformation {
 	// Create the Automaton
 	automaton := CreateAutomaton(searchedTerm, distanceMax)
+	defer automaton.Close()
 
 	// Start the search
 	state := automaton.Start()
