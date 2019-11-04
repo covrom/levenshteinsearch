@@ -2,10 +2,11 @@ package main
 
 import (
 	"bufio"
-	"github.com/twuillemin/levenshteinsearch/pkg/levenshteinsearch"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/covrom/levenshteinsearch/pkg/levenshteinsearch"
 )
 
 func main() {

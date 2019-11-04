@@ -99,7 +99,7 @@ go version go1.12 linux/amd64
 ```
 goos: linux
 goarch: amd64
-pkg: github.com/twuillemin/levenshteinsearch/pkg/levenshteinsearch
+pkg: github.com/covrom/levenshteinsearch/pkg/levenshteinsearch
 BenchmarkNaive1Word-8       	      30	  49067618 ns/op	18398114 B/op	  278685 allocs/op
 BenchmarkNaive3Word-8       	      10	 129002968 ns/op	43198313 B/op	  842237 allocs/op
 BenchmarkMap1Word-8         	     200	   9906184 ns/op	 3600539 B/op	   36129 allocs/op

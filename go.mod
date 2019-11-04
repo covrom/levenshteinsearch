@@ -1,3 +1,3 @@
-module github.com/twuillemin/levenshteinsearch
+module github.com/covrom/levenshteinsearch
 
-go 1.12
+go 1.13
