@@ -17,3 +17,4 @@ vendor/
 *.log
 .DS_Store
 
+bench/bench.test
