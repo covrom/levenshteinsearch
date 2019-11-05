@@ -33,12 +33,10 @@ func TestVsPythonReference(t *testing.T) {
 }
 
 func TestCreateDigraph(t *testing.T) {
-	// FIXME: runtime: goroutine stack exceeds 1000000000-byte limit
-	// fatal error: stack overflow
-	// digraph := CreateDigraph("woof", 10)
-	// if len(digraph) != 1132 {
-	// 	t.Error("Expected a digraph definition with 1132 lines")
-	// }
+	digraph := CreateDigraph("woof", 10)
+	if len(digraph) != 1132 {
+		t.Error("Expected a digraph definition with 1132 lines")
+	}
 }
 
 func TestCanMatch(t *testing.T) {

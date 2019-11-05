@@ -286,7 +286,7 @@ func (automaton *LevenshteinAutomaton) getAllTransitions(state AutomatonState) [
 	}
 
 	// Append the generic '*' transition
-	transitions = append(automaton.getAllTransitions(state), '*')
+	transitions = append(transitions, '*')
 
 	// Luxury, sort the transitions to ensure stable results. As generated digraph
 	// are not really useful for "production" this sort should not have any real life
