@@ -31,14 +31,12 @@ func TestVsPythonReference(t *testing.T) {
 		t.Error("Expected to have 6 states like python does")
 	}
 }
-
 func TestCreateDigraph(t *testing.T) {
 	digraph := CreateDigraph("woof", 10)
 	if len(digraph) != 1132 {
 		t.Error("Expected a digraph definition with 1132 lines")
 	}
 }
-
 func TestCanMatch(t *testing.T) {
 	// Create the Automaton
 	automaton := CreateAutomaton("bannana", 1)
