@@ -72,7 +72,7 @@ func putValSlice(sl []int) {
 	if sl == nil {
 		return
 	}
-	valPool.Put(sl[:0])
+	valPool.Put(sl)
 }
 
 // CreateAutomaton creates a new automaton
